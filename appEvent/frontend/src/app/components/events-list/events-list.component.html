@@ -1,0 +1,51 @@
+<div *ngIf="(events | filterByProperty:'owner':userId).length > 0" class="grid grid-cols-1 p-4">
+  <div class="gid grid-rows-4 grid-flow-col">
+    <h3 class="font-bold p-0">My Events</h3>
+  </div>
+</div>
+<div *ngIf="events && events.length" class="grid space-x-1 lg:grid-cols-6 p-4 gap-2">
+  <div *ngFor="let event of events | filterByProperty:'owner':userId" class="bg-white border-2 border-gray-400 rounded">
+    <div class="bg-white">
+      <img class="w-full" src="https://storage.googleapis.com/pai-images/385adcfa38db46bb858cef8e96824b0b.jpeg" alt="{{event.name}}">
+      <div class="px-6 py-4">
+        <div class="font-bold text-xl mb-2">{{event.name}}</div>
+        <p>
+          <button
+          (click)="deleteEvent(event)"
+          type="button"
+          class="mr-2 cursor-pointer">
+          <svg class="w-6 h-6 text-gray-800 text-red-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+            <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z" clip-rule="evenodd"/>
+          </svg>
+          </button>
+          <button
+          (click)="editEvent(event)"
+          type="button"
+          class="mr-2 cursor-pointer">
+          <svg class="w-6 h-6 text-gray-800 text-blue-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+            <path fill-rule="evenodd" d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z" clip-rule="evenodd"/>
+            <path fill-rule="evenodd" d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z" clip-rule="evenodd"/>
+          </svg>
+          </button>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Eventos que sou membro nao posso executar acoes -->
+<div *ngIf="(events | filterByProperty:'members':userId).length > 0" class="grid grid-cols-1 p-4">
+  <div class="gid grid-rows-4 grid-flow-col">
+    <h3 class="font-bold p-0">Events i'm a member</h3>
+  </div>
+</div>
+<div *ngIf="events && events.length" class="grid space-x-1 lg:grid-cols-6 p-4 gap-2">
+  <div *ngFor="let event of events | filterByProperty: 'members': userId" class="bg-white border-2 border-gray-400 rounded">
+    <div class="bg-white">
+      <img class="w-full" src="https://cdn.vox-cdn.com/thumbor/PqAwdNpc7p-5GUCSMxQPehSU-ck=/0x0:1920x1200/1200x800/filters:focal(810x375:1116x681)/cdn.vox-cdn.com/uploads/chorus_image/image/72524797/pikachu_artwork.0.jpg" alt="{{event.name}}">
+      <div class="px-6 py-4">
+        <div class="font-bold text-xl mb-2">{{event.name}}</div>
+      </div>
+    </div>
+  </div>
+</div>

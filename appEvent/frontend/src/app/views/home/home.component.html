@@ -1,0 +1,15 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+  <div class="w-full max-w-lg p-8 bg-white rounded-lg shadow-lg">
+    <div class="flex mb-4">
+      <button (click)="activateTab(1)" [ngStyle]="{ 'background-color': activeTab === 1 ? '#4299e1' : '' }" class="flex-1 px-4 py-2 text-center">Sign in</button>
+      <button (click)="activateTab(2)" [ngStyle]="{ 'background-color': activeTab === 2 ? '#4299e1' : '' }" class="flex-1 px-4 py-2 text-center">Sign up</button>
+    </div>
+    <div [class.hidden]="activeTab !== 1">
+      <app-login></app-login>
+    </div>
+    <div [class.hidden]="activeTab !== 2">
+      <app-signup></app-signup>
+    </div>
+  </div>
+</div>
+

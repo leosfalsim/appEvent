@@ -1,0 +1,167 @@
+<div id="modal"
+  [ngClass]="{
+    'fixed z-10 inset-0': true,
+    'hidden': !openModal
+  }">
+  <div
+    class="flex items-center justify-center min-h-screen bg-gray-500 bg-opacity-75 transition-opacity"
+  >
+    <div
+      class="flex flex-col items-center justify-between bg-white p-20 rounded w-30"
+    >
+      <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+        <h1 class="font-bold text-3xl">
+          Edit Event
+        </h1>
+      </div>
+      <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+        <form *ngIf="form" [formGroup]="form" class="space-y-1" action="#" method="POST">
+          <div>
+            <label for="name" class="block text-sm font-medium leading-6 text-gray-900">Name</label>
+            <div class="mt-2">
+              <input id="name" name="name" type="text" autocomplete="name" formControlName="name" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+            </div>
+            <div *ngIf="(form.get('name')?.dirty) && form.get('name')?.hasError('required')">
+              <span>This field shouldn't be empty!</span>
+            </div>
+            <div *ngIf="(form.get('name')?.dirty) && form.get('name')?.hasError('pattern')">
+              <span>Provide a valid name!</span>
+            </div>
+          </div>
+
+          <div>
+            <label for="description" class="block text-sm font-medium leading-6 text-gray-900">Description</label>
+            <div class="mt-2">
+              <textarea id="description" name="description" rows="4" cols="50" autocomplete="description" formControlName="description" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></textarea>
+            </div>
+            <div *ngIf="(form.get('description')?.dirty) && form.get('description')?.hasError('required')">
+              <span>This field shouldn't be empty!</span>
+            </div>
+            <!-- <div *ngIf="(form.get('description')?.dirty) && form.get('description')?.hasError('pattern')">
+              <span>Provide a valid description!</span>
+            </div> -->
+          </div>
+
+          <div>
+            <label for="startDate" class="block text-sm font-medium leading-6 text-gray-900">Start Date</label>
+            <div class="mt-2">
+              <input id="startDate"
+              name="startDate"
+              type="datetime-local"
+              autocomplete="startDate"
+              formControlName="startDate"
+              (change)="doEnableEndDate()"
+              (keydown)="blockUserTypeInInputTypeDate($event)"
+              required
+              class="
+              block
+              w-full
+              rounded-md
+              border-0
+              py-1.5
+              text-gray-900
+              shadow-sm
+              ring-1
+              ring-inset
+              ring-gray-300
+              placeholder:text-gray-400
+              focus:ring-2
+              focus:ring-inset
+              focus:ring-indigo-600
+              sm:text-sm
+              sm:leading-6">
+              <div *ngIf="(form.get('startDate')?.dirty) && form.get('startDate')?.hasError('required')">
+                <span>This field shouldn't be empty!</span>
+              </div>
+              <div *ngIf="(form.get('startDate')?.dirty) && form.get('startDate')?.hasError('pattern')">
+                <span>Provide a valid e-mail!</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label for="endDate" class="block text-sm font-medium leading-6 text-gray-900">End Date</label>
+            <div class="mt-2">
+              <input
+              id="endDate"
+              name="endDate"
+              type="datetime-local"
+              autocomplete="endDate"
+              formControlName="endDate"
+              [min]="form.value.startDate"
+              (keydown)="blockUserTypeInInputTypeDate($event)"
+              required
+              class="
+              block
+              w-full
+              rounded-md
+              border-0
+              py-1.5
+              text-gray-900
+              shadow-sm
+              ring-1
+              ring-inset
+              ring-gray-300
+              placeholder:text-gray-400
+              focus:ring-2
+              focus:ring-inset
+              focus:ring-indigo-600
+              sm:text-sm
+              sm:leading-6">
+              <div *ngIf="(form.get('endDate')?.dirty) && form.get('endDate')?.hasError('required')">
+                <span>This field shouldn't be empty!</span>
+              </div>
+              <div *ngIf="(form.get('endDate')?.dirty) && form.get('endDate')?.hasError('pattern')">
+                <span>Provide a valid e-mail!</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between">
+              <label for="eventColor" class="block text-sm font-medium leading-6 text-gray-900">Color</label>
+            </div>
+            <div class="mt-2">
+              <input id="eventColor" name="eventColor" type="color" autocomplete="current-password" formControlName="eventColor" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+              <div *ngIf="(form.get('eventColor')?.dirty) && form.get('eventColor')?.hasError('required')">
+                <span>This field shouldn't be empty!</span>
+              </div>
+            </div>
+          </div>
+
+          <div formGroupName="checkboxes" *ngIf="members">
+            <div class="flex items-center justify-between scrollbar">
+              <label for="members" class="block text-sm font-medium leading-6 text-gray-900">Members</label>
+            </div>
+            <div class="mt-2" *ngFor="let member of members">
+              <label>
+                <input (change)="addMembers(member)" type="checkbox" [formControlName]="member._id"> {{ member.name }}
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <button
+            (click)="editEvent()"
+            type="submit"
+            [ngClass]="{
+            'flex w-full justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600': true,
+            'bg-indigo-600 hover:bg-indigo-500': !form.invalid,
+            'bg-gray-300': form.invalid}"
+            [disabled]="form.invalid">
+              Save Event
+            </button>
+          </div>
+        </form>
+      </div>
+      <button
+        id="close-modal-btn"
+        type="button"
+        class="border border-gray-200 px-10 py-3 mt-10 bg-red-500 hover:bg-red-600 text-white rounded uppercase tracking-wider"
+        (click)="emitCloseModal()"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+</div>

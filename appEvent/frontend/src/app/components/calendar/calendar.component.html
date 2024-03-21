@@ -1,0 +1,84 @@
+<div class="flex flex-col w-full p-10">
+  <div class="flex justify-between p-5 text-gray-900 bg-gradient-to-r from-red-200 via-red-300 to-yellow-200 focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400 font-medium">
+    <button (click)="prevMonth()" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+      <svg class="text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 9-3 3m0 0 3 3m-3-3h7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+      </svg>
+      <span class="sr-only">Back</span>
+    </button>
+    <span class="font-bold text-indigo-500">{{ getMonthYearLabel() }}</span>
+    <button (click)="prevMonth()" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+      <svg class="text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m12.75 15 3-3m0 0-3-3m3 3h-7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+      </svg>
+      <span class="sr-only">Next</span>
+    </button>
+  </div>
+  <div class="flex text-gray-900 bg-gradient-to-r from-red-200 via-red-300 to-yellow-200 focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400 font-medium">
+    <div class="flex-1 text-center p-5" *ngFor="let day of daysOfWeek">{{ day }}</div>
+  </div>
+  <div class="grid grid-cols-7">
+    <div
+      [ngClass]="{'border border-solid border-gray-400 p-10 cursor-pointer': true,
+    'bg-blue-200': day.isToday,
+    'bg-green-300': day.date.toDateString() === selectedDate?.toDateString()}"
+    [ngStyle]="{'background-color': day.eventColor ? day.eventColor : 'white'}"
+      *ngFor="let day of daysInMonth"
+      [id]="'day-' + day.date.getDate()"
+      (click)="selectDate(day)"
+    >
+      {{ day.date.getDate() }}
+    </div>
+  </div>
+  <div class="flex mt-5">
+    <button
+      (click)="createEvent()"
+      type="button"
+      class="
+      text-white
+      bg-blue-700
+      hover:bg-blue-800
+      focus:ring-4
+      focus:outline-none
+      focus:ring-blue-300
+      font-medium
+      rounded-md
+      text-sm p-2.5
+      text-center
+      inline-flex
+      items-center me-2
+      dark:bg-blue-600
+      dark:hover:bg-blue-700
+      dark:focus:ring-blue-800">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+      </svg>
+      <span class="ml-1">New Event</span>
+    </button>
+  </div>
+  <div class="flex mt-5">
+    <app-events-list
+    [events]="events"
+    [userId]="userId"
+    (eventSelected)="getEventSelected($event)"
+    ></app-events-list>
+  </div>
+</div>
+
+<app-calendar-event-modal
+[event]="event"
+[openModal]="openModal"
+(closeModal)="closeModal($event)">
+</app-calendar-event-modal>
+
+<app-calendar-event-form
+[openModal]="openModalForm"
+(closeModal)="closeModalForm($event)">
+</app-calendar-event-form>
+
+<app-calendar-event-edit-form
+[openModal]="openModalEditForm"
+[eventToEdit]="eventToEdit"
+(closeModal)="closeModal($event)"
+>
+</app-calendar-event-edit-form>
